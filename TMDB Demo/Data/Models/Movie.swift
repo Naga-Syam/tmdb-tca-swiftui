@@ -50,7 +50,9 @@ struct Movie: Codable, Identifiable {
         case name
         case voteAverage = "vote_average"
     }
-    
+}
+
+extension Movie {
     var posterURL: URL? {
         return URL(string: TMDBConstans.imageBaseURL + (self.posterPath ?? ""))
     }
@@ -65,6 +67,7 @@ struct Movie: Codable, Identifiable {
 }
 
 extension Movie {
+    
     init(with favorite: FavouriteItem) {
         self.name = favorite.name
         self.title = favorite.title

@@ -14,12 +14,15 @@ struct DetailFeature {
     @ObservableState
     struct State {
         var isLoading = false
+        var isFavourite = false
         var item: Movie
         var movieCast: [Cast]?
         var error: Error?
     }
     
     enum Action {
+        case fetchFavState
+        case toggleFavourite
         case fetchMovieCast
         case responseReceived(MovieCastResponse)
         case setError(Error)
@@ -32,7 +35,7 @@ struct DetailFeature {
                 state.isLoading = true
                 return .run { [movie = state.item] send in
                     do {
-                        let discovery: MovieCastResponse = try await ServiceManager.shared.request(urlString: TMDBConstans.getMovieCast(movie.id ?? 0).urlPath)
+                        let discovery: MovieCastResponse = try await ServiceManager.shared.request(urlString: TMDBConstans.getMovieCast(movie.id).urlPath)
                         await send(.responseReceived(discovery))
                     } catch {
                         await send(.setError(error))
@@ -43,6 +46,12 @@ struct DetailFeature {
                 return .none
             case .setError(let error):
                 state.error = error
+                return .none
+            case .toggleFavourite:
+                state.isFavourite = ServiceManager.shared.toggleFavStatus(state.item)
+                return .none
+            case .fetchFavState:
+                state.isFavourite = ServiceManager.shared.hasFavorite(with: state.item)
                 return .none
             }
         }

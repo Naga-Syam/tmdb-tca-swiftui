@@ -10,7 +10,7 @@ import ComposableArchitecture
 import Kingfisher
 
 struct DetailView: View {
-    let store: StoreOf<DetailFeature>
+    var store: StoreOf<DetailFeature>
     @Environment(\.dismiss) private var dismiss
     let headerHeight: CGFloat = 300
     var body: some View {
@@ -78,15 +78,16 @@ struct DetailView: View {
         }
         .overlay(alignment: .topTrailing) {
             Button {
-                
+                store.send(.toggleFavourite)
             } label: {
-                Image(systemName: "heart")
+                Image(systemName: store.isFavourite ? "heart.fill" : "heart")
                     .imageScale(.large)
                     .fontWeight(.bold)
             }
             .padding(.trailing)
         }
         .onAppear() {
+            store.send(.fetchFavState)
             store.send(.fetchMovieCast)
         }
         .toolbar(.hidden, for: .navigationBar)
