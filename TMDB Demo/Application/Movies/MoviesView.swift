@@ -17,7 +17,8 @@ struct MoviesView: View {
             NavigationView {
                 VStack {
                     sortSegments(store, option: $selectedSegment)
-                        .padding()
+                        .padding(.horizontal)
+                    Spacer()
                     if let error = store.error {
                         Text("Error: \(error.localizedDescription)")
                             .foregroundColor(.red)
