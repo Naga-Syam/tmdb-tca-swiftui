@@ -11,10 +11,14 @@ import CoreData
 extension FavouriteItem {
     static func instance(from movie: Movie, with context: NSManagedObjectContext) -> FavouriteItem {
         let newFavorite = FavouriteItem(context: context)
+        newFavorite.id = Int32(movie.id)
         newFavorite.name = movie.name
-        newFavorite.rating = movie.voteAverage ?? 0
-        newFavorite.movieId = Int32(movie.id ?? 0)
+        newFavorite.title = movie.title
+        newFavorite.backdropPath = movie.backdropPath
+        newFavorite.overview = movie.overview
         newFavorite.posterPath = movie.posterPath
+        newFavorite.voteAverage = movie.voteAverage ?? 0
+        newFavorite.popularity = movie.popularity ?? 0
         return newFavorite
     }
 }

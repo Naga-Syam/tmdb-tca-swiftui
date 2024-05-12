@@ -37,6 +37,7 @@ enum TMDBConstans {
 
 class ServiceManager {
     static let shared = ServiceManager()
+    let context = CoreData.shared.context
     
     func request<T: Decodable> (urlString: String, parameters: [String: String] = [:]) async throws -> T {
         guard let url = URL(string: urlString) else {
@@ -56,7 +57,6 @@ class ServiceManager {
             throw URLError(.badURL)
         }
         
-        print("#URL - ", requestUrl)
         var request = URLRequest(url: requestUrl)
         
         request.allHTTPHeaderFields = ["Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5YTIyMWU5OTQ2YTgwMDc0NmFlZjFkNmRiODMwZGM4MyIsInN1YiI6IjY2M2RjOTgzZGRlZjY0MjhlNzBmN2M3NiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.uvvPWezRS-SPorXcKnXM5pFOKT--wEcejMeBJIm6uCA"]

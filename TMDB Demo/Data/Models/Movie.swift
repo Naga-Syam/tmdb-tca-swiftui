@@ -22,31 +22,33 @@ struct TMDBResponse: Codable {
 
 // MARK: - Result
 struct Movie: Codable, Identifiable {
-    let adult: Bool?
     let backdropPath: String?
-    let genreIDS: [Int]?
-    let id: Int?
-    let originalLanguage, originalTitle, overview: String?
+    let id: Int
+    let overview: String?
     let popularity: Double?
-    let posterPath, releaseDate, title: String?
-    let video: Bool?
+    let posterPath: String?
     let voteAverage: Double?
-    let voteCount: Int?
     let name: String?
+    let title: String?
+    
+    init(id: Int, name: String?, title: String?,posterPath: String?, voteAverage: Double?) {
+        self.name = name
+        self.title = title
+        self.posterPath = posterPath
+        self.id = id
+        self.voteAverage = voteAverage
+        self.popularity = nil
+        self.backdropPath = nil
+        self.overview = nil
+    }
 
     enum CodingKeys: String, CodingKey {
-        case adult
         case backdropPath = "backdrop_path"
-        case genreIDS = "genre_ids"
         case id
-        case originalLanguage = "original_language"
-        case originalTitle = "original_title"
-        case overview, popularity
+        case overview, popularity, title
         case posterPath = "poster_path"
-        case releaseDate = "release_date"
-        case title, video, name
+        case name
         case voteAverage = "vote_average"
-        case voteCount = "vote_count"
     }
     
     var posterURL: URL? {
@@ -62,47 +64,16 @@ struct Movie: Codable, Identifiable {
     }
 }
 
-
-//import Foundation
-//
-//// MARK: - PopularMovieResponse
-//struct PopularMovieResponse: Codable {
-//    let page: Int?
-//    let results: [Result]?
-//    let totalPages, totalResults: Int?
-//
-//    enum CodingKeys: String, CodingKey {
-//        case page, results
-//        case totalPages = "total_pages"
-//        case totalResults = "total_results"
-//    }
-//}
-//
-//// MARK: - Result
-//struct Result: Codable {
-//    let adult: Bool?
-//    let backdropPath: String?
-//    let genreIDS: [Int]?
-//    let id: Int?
-//    let originalLanguage, originalTitle, overview: String?
-//    let popularity: Double?
-//    let posterPath, releaseDate, title: String?
-//    let video: Bool?
-//    let voteAverage: Double?
-//    let voteCount: Int?
-//
-//    enum CodingKeys: String, CodingKey {
-//        case adult
-//        case backdropPath = "backdrop_path"
-//        case genreIDS = "genre_ids"
-//        case id
-//        case originalLanguage = "original_language"
-//        case originalTitle = "original_title"
-//        case overview, popularity
-//        case posterPath = "poster_path"
-//        case releaseDate = "release_date"
-//        case title, video
-//        case voteAverage = "vote_average"
-//        case voteCount = "vote_count"
-//    }
-//}
+extension Movie {
+    init(with favorite: FavouriteItem) {
+        self.name = favorite.name
+        self.title = favorite.title
+        self.posterPath = favorite.posterPath
+        self.id = Int(favorite.id)
+        self.voteAverage = favorite.voteAverage
+        self.popularity = favorite.popularity
+        self.backdropPath = favorite.backdropPath
+        self.overview = favorite.overview
+        
+    }
+}
