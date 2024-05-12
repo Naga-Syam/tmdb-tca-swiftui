@@ -26,6 +26,7 @@ struct DetailView: View {
                                 .clipShape(RoundedRectangle(cornerRadius: 15))
                         } placeholder: {
                             ProgressView()
+                                .frame(width: geo.size.width, height: headerHeight)
                         }
                     }
                     Spacer()
