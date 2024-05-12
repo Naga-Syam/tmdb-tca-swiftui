@@ -11,6 +11,7 @@ import ComposableArchitecture
 struct MoviesView: View {
     @Bindable var store: StoreOf<MoviesFeature>
     @State private var selectedSegment = SortingOptions.topRated
+    let title: String
     var body: some View {
         NavigationStack(path: $store.scope(state: \.path, action: \.path)) {
             NavigationView {
@@ -32,7 +33,7 @@ struct MoviesView: View {
                 .onAppear() {
                     store.send(.fetchList)
                 }
-                .navigationTitle("Movies")
+                .navigationTitle(title)
             }
         }  destination: { store in
             DetailView(store: store)

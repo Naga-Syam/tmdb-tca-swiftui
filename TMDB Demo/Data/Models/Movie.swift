@@ -53,6 +53,10 @@ struct Movie: Codable, Identifiable {
         return URL(string: TMDBConstans.imageBaseURL + (self.posterPath ?? ""))
     }
     
+    var backDropURL: URL? {
+        return URL(string: TMDBConstans.imageBaseURLLarge + (self.backdropPath ?? ""))
+    }
+    
     var displayTitle: String? {
         return title == nil ? name : title
     }

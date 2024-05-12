@@ -55,15 +55,7 @@ struct CardItemView: View {
                         .frame(maxWidth: .infinity)
                     HStack {
                         VStack {
-                            HStack {
-                                Image(systemName: "star.fill")
-                                    .imageScale(.small)
-                                    .foregroundColor(.yellow)
-                                Text("\(card.voteAverage ?? 0.0, specifier: "%.2f")")
-                                    .font(.caption)
-                                    .lineLimit(1)
-                                Spacer()
-                            }
+                            RatingView(rating: card.voteAverage ?? 0.0)
                             HStack {
                                 Text(card.displayTitle ?? "")
                                     .font(.caption)
@@ -79,6 +71,24 @@ struct CardItemView: View {
                     }
                 }
             }
+        }
+    }
+}
+
+
+// MARK: Rating View
+
+struct RatingView: View {
+    let rating: Double
+    var body: some View {
+        HStack {
+            Image(systemName: "star.fill")
+                .imageScale(.small)
+                .foregroundColor(.yellow)
+            Text("\(rating, specifier: "%.2f")")
+                .font(.caption)
+                .lineLimit(1)
+            Spacer()
         }
     }
 }

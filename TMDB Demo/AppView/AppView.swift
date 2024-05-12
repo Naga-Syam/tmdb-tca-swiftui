@@ -20,14 +20,14 @@ struct AppView: View {
             }
             MoviesView(store: Store(initialState: MoviesFeature.State(), reducer: {
                 MoviesFeature(dataType: .discoverMovies)
-            }))
+            }), title: "Movies")
             .tabItem {
                 Image(systemName: "popcorn.circle")
                 Text("Movies")
             }
             MoviesView(store: Store(initialState: MoviesFeature.State(), reducer: {
                 MoviesFeature(dataType: .discoverTV)
-            }))
+            }), title: "TV Shows")
             .tabItem {
                 Image(systemName: "tv.circle")
                 Text("TV Shows")

@@ -10,11 +10,13 @@ import Foundation
 enum TMDBConstans {
     static let baseURL = "https://api.themoviedb.org/3"
     static let imageBaseURL = "https://image.tmdb.org/t/p/w154"
+    static let imageBaseURLLarge = "https://image.tmdb.org/t/p/original"
     case trending
     case popular
     case trendingTV
     case discoverMovies
     case discoverTV
+    case getMovieCast(Int)
     var urlPath: String {
         switch self {
         case .trending:
@@ -27,6 +29,8 @@ enum TMDBConstans {
             "\(Self.baseURL)/discover/movie"
         case .discoverTV:
             "\(Self.baseURL)/discover/tv"
+        case .getMovieCast(let movieId):
+            "\(Self.baseURL)/movie/\(movieId)/credits"
         }
     }
 }
