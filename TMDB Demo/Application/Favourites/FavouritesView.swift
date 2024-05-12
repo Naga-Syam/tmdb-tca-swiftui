@@ -6,13 +6,43 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
 
 struct FavouritesView: View {
+    @Bindable var store: StoreOf<FavouritesFeature>
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationStack(path: $store.scope(state: \.path, action: \.path)) {
+            NavigationView {
+                ScrollView {
+                    itemsList(store)
+                        .padding(.horizontal)
+                }
+                .navigationTitle("Favourites")
+            }
+            .onAppear() {
+                store.send(.fetchFavourites)
+            }
+        }  destination: { store in
+            DetailView(store: store)
+        }
+    }
+    
+    @ViewBuilder
+    private func itemsList(_ viewStore: StoreOf<FavouritesFeature>) -> some View {
+        let gridItem = GridItem(.flexible(minimum: 80, maximum: 180))
+        LazyVGrid(
+            columns: [gridItem, gridItem, gridItem],
+            alignment: .center,
+            spacing: 16,
+            content: {
+                ForEach(viewStore.list) { movie in
+                    CardItemView(card: movie, isFavorite: false)
+                }
+            }
+        )
     }
 }
 
-#Preview {
-    FavouritesView()
-}
+//#Preview {
+//    FavouritesView()
+//}

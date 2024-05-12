@@ -11,33 +11,35 @@ import ComposableArchitecture
 @Reducer
 struct FavouritesFeature {
     @ObservableState
-    struct State: Equatable {
-        var isLoading = false
-        var fact: String?
+    struct State {
+        var list: [Movie] = []
+        var path = StackState<DetailFeature.State>()
+        var error: Error?
     }
     
     enum Action {
-        case fetchList
-        case factResponse(String)
+        case fetchFavourites
+        case setFavourites([Movie])
+        case path(StackAction<DetailFeature.State, DetailFeature.Action>)
     }
     
     var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
-            case .factResponse(let fact):
-                state.isLoading = false
-                state.fact = fact
-                return .none
-            case .fetchList:
-                state.isLoading = true
-                state.fact = nil
+            case .fetchFavourites:
                 return .run { send in
-                    let (data, _) = try await URLSession.shared
-                        .data(from: URL(string: "http://numbersapi.com/1")!)
-                    let fact = String(decoding: data, as: UTF8.self)
-                    await send(.factResponse(fact))
+                    let favourites = ServiceManager.shared.getFavorites()
+                    return await send(.setFavourites(favourites))
                 }
+            case .setFavourites(let favourites):
+                state.list = favourites
+                return .none
+            case .path:
+                return .none
             }
+        }
+        .forEach(\.path, action: \.path) {
+            DetailFeature()
         }
     }
 }

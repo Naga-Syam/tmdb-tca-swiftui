@@ -32,11 +32,13 @@ struct AppView: View {
                 Image(systemName: "tv.circle")
                 Text("TV Shows")
             }
-            FavouritesView()
-                .tabItem {
-                    Image(systemName: "heart.circle")
-                    Text("Fav")
-                }
+            FavouritesView(store: Store(initialState: FavouritesFeature.State(), reducer: {
+                FavouritesFeature()
+            }))
+            .tabItem {
+                Image(systemName: "heart.circle")
+                Text("Fav")
+            }
         }
     }
 }
