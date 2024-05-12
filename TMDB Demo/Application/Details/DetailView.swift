@@ -76,6 +76,16 @@ struct DetailView: View {
             CustomBackButton(dismiss: dismiss)
                 .padding(.leading)
         }
+        .overlay(alignment: .topTrailing) {
+            Button {
+                
+            } label: {
+                Image(systemName: "heart")
+                    .imageScale(.large)
+                    .fontWeight(.bold)
+            }
+            .padding(.trailing)
+        }
         .onAppear() {
             store.send(.fetchMovieCast)
         }
