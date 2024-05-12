@@ -15,7 +15,7 @@ struct MoviesView: View {
         NavigationStack(path: $store.scope(state: \.path, action: \.path)) {
             NavigationView {
                 VStack {
-                    sortSegments(store)
+                    sortSegments(store, option: $selectedSegment)
                         .padding()
                     if let error = store.error {
                         Text("Error: \(error.localizedDescription)")
@@ -55,8 +55,8 @@ struct MoviesView: View {
     }
     
     @ViewBuilder
-    private func sortSegments(_ viewStore: StoreOf<MoviesFeature>) -> some View {
-        Picker(selection: $selectedSegment, label: Text("Select a segment")) {
+    private func sortSegments(_ viewStore: StoreOf<MoviesFeature>, option: Binding<SortingOptions>) -> some View {
+        Picker(selection: option, label: Text("Select a segment")) {
             ForEach(SortingOptions.allCases) { sortOption in
                 Text("\(sortOption.title)").tag(sortOption)
             }

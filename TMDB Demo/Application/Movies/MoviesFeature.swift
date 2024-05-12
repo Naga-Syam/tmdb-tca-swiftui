@@ -10,6 +10,9 @@ import ComposableArchitecture
 
 @Reducer
 struct MoviesFeature {
+    
+    let dataType: TMDBConstans
+    
     @ObservableState
     struct State {
         var isLoading = false
@@ -36,7 +39,7 @@ struct MoviesFeature {
                 state.isLoading = true
                 return .run { [sort = state.selectedSortOption.sortBy] send in
                     do {
-                        let discovery: TMDBResponse = try await ServiceManager.shared.request(urlString: TMDBConstans.discoverMovies.urlPath, parameters: ["sort_by": sort])
+                        let discovery: TMDBResponse = try await ServiceManager.shared.request(urlString: dataType.urlPath, parameters: ["sort_by": sort])
                         await send(.responseReceived(discovery))
                     } catch {
                         await send(.setError(error))
@@ -64,7 +67,6 @@ struct MoviesFeature {
     }
 }
 
-//    discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc
 // MARK: SortingOptions
 enum SortingOptions: Int, CaseIterable, Identifiable {
     var id: Self {

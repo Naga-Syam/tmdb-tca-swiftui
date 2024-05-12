@@ -19,17 +19,19 @@ struct AppView: View {
                 Text("Home")
             }
             MoviesView(store: Store(initialState: MoviesFeature.State(), reducer: {
-                MoviesFeature()
+                MoviesFeature(dataType: .discoverMovies)
             }))
             .tabItem {
                 Image(systemName: "popcorn.circle")
                 Text("Movies")
             }
-            TVShowsView()
-                .tabItem {
-                    Image(systemName: "tv.circle")
-                    Text("TV Shows")
-                }
+            MoviesView(store: Store(initialState: MoviesFeature.State(), reducer: {
+                MoviesFeature(dataType: .discoverTV)
+            }))
+            .tabItem {
+                Image(systemName: "tv.circle")
+                Text("TV Shows")
+            }
             FavouritesView()
                 .tabItem {
                     Image(systemName: "heart.circle")

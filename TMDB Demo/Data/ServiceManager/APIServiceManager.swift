@@ -14,6 +14,7 @@ enum TMDBConstans {
     case popular
     case trendingTV
     case discoverMovies
+    case discoverTV
     var urlPath: String {
         switch self {
         case .trending:
@@ -24,6 +25,8 @@ enum TMDBConstans {
             "\(Self.baseURL)/trending/tv/day"
         case .discoverMovies:
             "\(Self.baseURL)/discover/movie"
+        case .discoverTV:
+            "\(Self.baseURL)/discover/tv"
         }
     }
 }
