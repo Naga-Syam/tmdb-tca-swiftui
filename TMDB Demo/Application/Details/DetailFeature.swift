@@ -15,7 +15,7 @@ struct DetailFeature {
     struct State {
         var isLoading = false
         var item: Movie
-        var movieCast: [Cast] = []
+        var movieCast: [Cast]?
         var error: Error?
     }
     

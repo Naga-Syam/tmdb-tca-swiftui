@@ -50,20 +50,22 @@ struct DetailView: View {
                             .lineLimit(2)
                             .foregroundColor(.secondary)
                         
-                        HStack {
-                            Text("Cast & Crew")
-                                .font(.title3)
-                                .fontWeight(.bold)
-                            Spacer()
-                        }
-                        
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            LazyHStack {
-                                ForEach(store.movieCast) { cast in
-                                    CastView(cast: cast)
+                        if let movieCast = store.movieCast {
+                            HStack {
+                                Text("Cast & Crew")
+                                    .font(.title3)
+                                    .fontWeight(.bold)
+                                Spacer()
+                            }
+                            ScrollView(.horizontal, showsIndicators: false) {
+                                LazyHStack {
+                                    ForEach(movieCast) { cast in
+                                        CastView(cast: cast)
+                                    }
                                 }
                             }
                         }
+                        
                     }
                     .padding()
                 }
