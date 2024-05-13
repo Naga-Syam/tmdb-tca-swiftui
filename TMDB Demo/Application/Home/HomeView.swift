@@ -25,34 +25,51 @@ struct HomeView: View {
                     } else {
                         ScrollView {
                             VStack {
-                                if let movies = store.trending {
-                                    HorizontalGrid(title: "Trending", movies: movies)
-                                }
-                                if let movies = store.popularMovies {
-                                    HorizontalGrid(title: "Popular Movies", movies: movies)
-                                }
-                                if let movies = store.tvShows {
-                                    HorizontalGrid(title: "TV Shows", movies: movies)
+                                if !store.searchQuery.isEmpty {
+                                    
+                                    if let results = store.searchResults {
+                                        if results.isEmpty {
+                                            Text("No Movie Results Found")
+                                        } else {
+                                            HorizontalGrid(title: "Search Results - Movies", movies: results)
+                                        }
+                                    }
+                                    
+                                    if let results = store.searchResultsTV {
+                                        if results.isEmpty {
+                                            Text("No TV Results Found")
+                                        } else {
+                                            HorizontalGrid(title: "Search Results - TV", movies: results)
+                                        }
+                                    }
+                                    
+                                } else {
+                                    if let movies = store.trending {
+                                        HorizontalGrid(title: "Trending", movies: movies)
+                                    }
+                                    if let movies = store.popularMovies {
+                                        HorizontalGrid(title: "Popular Movies", movies: movies)
+                                    }
+                                    if let movies = store.tvShows {
+                                        HorizontalGrid(title: "TV Shows", movies: movies)
+                                    }
                                 }
                             }
                         }
                     }
                 }
-                .searchable(text: $searchText) {  // <-- Add searchable modifier
-                    if searchText.isEmpty {
-                        
-                    } else {
-                        ForEach(0..<10) { index in  // <-- Customize your search results
-                            Text("Search Result \(index)")
-                        }
-                    }
-                    
-                }
+                .searchable(text: $store.searchQuery.sending(\.searchQueryChanged))
                 .onAppear {
                     store.send(.fetchTrending)
                     store.send(.fetchPopularMovies)
                     store.send(.fetchTvShows)
                 }
+            }
+            .task(id: store.searchQuery) {
+              do {
+                try await Task.sleep(for: .milliseconds(300))
+                await store.send(.searchQueryChangeDebounced).finish()
+              } catch {}
             }
         }  destination: { store in
             DetailView(store: store)

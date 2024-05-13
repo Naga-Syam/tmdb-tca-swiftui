@@ -17,6 +17,8 @@ enum TMDBConstans {
     case discoverMovies
     case discoverTV
     case getMovieCast(Int)
+    case searchMovies
+    case searchTV
     var urlPath: String {
         switch self {
         case .trending:
@@ -31,6 +33,10 @@ enum TMDBConstans {
             "\(Self.baseURL)/discover/tv"
         case .getMovieCast(let movieId):
             "\(Self.baseURL)/movie/\(movieId)/credits"
+        case .searchMovies:
+            "\(Self.baseURL)/search/movie"
+        case .searchTV:
+            "\(Self.baseURL)/search/tv"
         }
     }
 }
