@@ -10,13 +10,12 @@ import ComposableArchitecture
 
 struct MoviesView: View {
     @Bindable var store: StoreOf<MoviesFeature>
-    @State private var selectedSegment = SortingOptions.topRated
     let title: String
     var body: some View {
         NavigationStack(path: $store.scope(state: \.path, action: \.path)) {
             NavigationView {
                 VStack {
-                    sortSegments(store, option: $selectedSegment)
+                    sortSegments(store, option: $store.selectedSortOption.sending(\.sortSelectionChanged))
                         .padding(.horizontal)
                     Spacer()
                     if let error = store.error {
@@ -65,8 +64,5 @@ struct MoviesView: View {
             }
         }
         .pickerStyle(SegmentedPickerStyle())
-        .onChange(of: selectedSegment) { oldValue, newValue in
-            viewStore.send(.sortSelectionChanged(newValue))
-        }
     }
 }
