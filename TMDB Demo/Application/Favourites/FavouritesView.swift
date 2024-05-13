@@ -13,12 +13,16 @@ struct FavouritesView: View {
     var body: some View {
         NavigationStack(path: $store.scope(state: \.path, action: \.path)) {
             NavigationView {
-                ScrollView {
-                    itemsList(store)
-                        .padding(.horizontal)
+                if store.list.isEmpty {
+                   Text("No Favourites added")
+                } else {
+                    ScrollView {
+                        itemsList(store)
+                            .padding(.horizontal)
+                    }
                 }
-                .navigationTitle("Favourites")
             }
+            .navigationTitle("Favourites")
             .onAppear() {
                 store.send(.fetchFavourites)
             }
@@ -42,7 +46,3 @@ struct FavouritesView: View {
         )
     }
 }
-
-//#Preview {
-//    FavouritesView()
-//}

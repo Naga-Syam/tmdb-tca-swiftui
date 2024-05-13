@@ -108,7 +108,3 @@ struct CustomBackButton: View {
         }
     }
 }
-
-//#Preview {
-//    DetailView(store: <#StoreOf<DetailFeature>#>)
-//}
