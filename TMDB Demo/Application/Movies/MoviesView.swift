@@ -24,6 +24,7 @@ struct MoviesView: View {
                             .foregroundColor(.red)
                     } else if store.isLoading {
                         ProgressView()
+                        Spacer()
                     } else {
                         ScrollView {
                             itemsList(store)

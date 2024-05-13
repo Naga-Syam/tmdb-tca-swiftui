@@ -9,32 +9,25 @@ import SwiftUI
 import ComposableArchitecture
 
 struct AppView: View {
+    let store: StoreOf<AppFeature>
     var body: some View {
         TabView {
-            HomeView(store: Store(initialState: HomeFeature.State(), reducer: {
-                HomeFeature()
-            }))
+            HomeView(store: store.scope(state: \.tab1, action: \.tab1))
             .tabItem {
                 Image(systemName: "house.circle")
                 Text("Home")
             }
-            MoviesView(store: Store(initialState: MoviesFeature.State(), reducer: {
-                MoviesFeature(dataType: .discoverMovies)
-            }), title: "Movies")
+            MoviesView(store: store.scope(state: \.tab2, action: \.tab2), title: "Movies")
             .tabItem {
                 Image(systemName: "popcorn.circle")
                 Text("Movies")
             }
-            MoviesView(store: Store(initialState: MoviesFeature.State(), reducer: {
-                MoviesFeature(dataType: .discoverTV)
-            }), title: "TV Shows")
+            MoviesView(store: store.scope(state: \.tab3, action: \.tab3), title: "TV Shows")
             .tabItem {
                 Image(systemName: "tv.circle")
                 Text("TV Shows")
             }
-            FavouritesView(store: Store(initialState: FavouritesFeature.State(), reducer: {
-                FavouritesFeature()
-            }))
+            FavouritesView(store: store.scope(state: \.tab4, action: \.tab4))
             .tabItem {
                 Image(systemName: "heart.circle")
                 Text("Fav")
@@ -44,5 +37,7 @@ struct AppView: View {
 }
 
 #Preview {
-    AppView()
+    AppView(store: Store(initialState: AppFeature.State(), reducer: {
+        AppFeature()
+    }))
 }

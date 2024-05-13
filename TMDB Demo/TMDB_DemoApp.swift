@@ -6,12 +6,15 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
 
 @main
 struct TMDB_DemoApp: App {
     var body: some Scene {
         WindowGroup {
-            AppView()
+            AppView(store: Store(initialState: AppFeature.State(), reducer: {
+                AppFeature()
+            }))
         }
     }
 }
